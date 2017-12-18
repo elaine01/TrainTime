@@ -72,28 +72,24 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey) {
 	console.log(trainTime);
 	console.log(trainFrequency);
 
-	// next arrival
-	var trainArrival = "20:30 PM";
+// Code this app to calculate when the next train will arrive; this should be relative to the current time.
+// Users from many different machines must be able to view same train times.
+	var firstTrainCoverted = moment(trainTime, "hh:mm").subtract(1, "years");
+	var currentTime = moment();
+	var timeDifference = moment().diff(moment(firstTrainCoverted), "minutes");
+	var remainingTime = timeDifference % trainFrequency;
+	var minutesNextTrain = trainFrequency - remainingTime;
+	var nextTrain = moment().add(minutesNextTrain, "minutes");
+	var nextTrainArrival = moment(nextTrain).format("hh:mm a")
 
-	// Prettify next arrival
-	// var trainNextArrival = moment.unix(trainArrival).format("HH:mm a");
 
-	$("#train-table > tbody").append("<tr><td>" + trainName + "</td><td>" + trainDestination 
-		+ "</td><td>" + trainFrequency + "</td><td>" + trainArrival + "</td><td>" 
-		+ trainTime + "</td><td>");
-
+	$("#train-table > tbody").append("<tr><td>" + trainName
+		+"</td><td>" + trainDestination 
+		+ "</td><td>" + trainFrequency
+		+ "</td><td>" + nextTrainArrival
+		+ "</td><td>" + minutesNextTrain + "</td><td>");
 
 })
-
-
-
-
-
-
-
-
-
-
 
 
 
